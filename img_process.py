@@ -78,6 +78,8 @@ def pre_process(dir):
     total_num_imgs = len(img_paths)
     num_imgs_per_bin = 100
     num_bins = int(total_num_imgs / num_imgs_per_bin)
+    if num_bins == 0 and total_num_imgs > 0:
+        num_bins = 1
     curr_image_index = 0
 
     dir_tokens = dir.split("/")
