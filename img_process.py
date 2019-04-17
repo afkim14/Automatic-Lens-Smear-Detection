@@ -78,6 +78,8 @@ def pre_process(dir):
     total_num_imgs = len(img_paths)
     num_imgs_per_bin = 100
     num_bins = int(total_num_imgs / num_imgs_per_bin)
+    if num_bins == 0 and total_num_imgs > 0:
+        num_bins = 1
     curr_image_index = 0
 
     dir_tokens = dir.split("/")
@@ -99,7 +101,7 @@ def pre_process(dir):
             # ADAPTIVE THRESHOLD
             adaptive_threshold = cv2.adaptiveThreshold(blur_output, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 105, 10)
             # SAVE
-            cv2.imwrite( bin_path + img_paths[curr_image_index].split("/")[1], adaptive_threshold )
+            cv2.imwrite( bin_path + img_paths[curr_image_index].split("/")[-1], adaptive_threshold )
 
             curr_num_imgs+=1
             curr_image_index+=1
@@ -127,7 +129,7 @@ def process(dir):
         dir = pre_process_paths[i]
         avg_img = image_mean(dir)
         threshold_img = cv2.threshold(avg_img, 127, 255, cv2.THRESH_BINARY)[1]
-        cv2.imwrite( process_paths[i] + 'finalMask.png', threshold_img )
+        cv2.imwrite( process_paths[i] + process_paths[i].split("/")[-2] + '_finalMask.png', threshold_img )
 
 def blur_detection(img_file):
     im = cv2.imread(img_file, cv2.IMREAD_GRAYSCALE)
@@ -156,5 +158,8 @@ if __name__ == '__main__':
         print("Please supply a directory of images. Usage: python3 img_process.py [img_dir_path]")
         exit(0)
 
-    pre_processed_images_path = pre_process(sys.argv[1])
+    dir = sys.argv[1]
+    if dir[-1] != "/":
+        dir += "/"
+    pre_processed_images_path = pre_process(dir)
     process = process(pre_processed_images_path)
