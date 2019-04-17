@@ -31,4 +31,4 @@ For example, we have also included a test directory for usage testing.
 python3 img_process.py test/
 ```
 
-The script will output two directories: `pre_processed_images/` and `processed_output`. `pre_processed_images` will contain the modified images using Histogram Equalization, Gaussian Blur, and more. These images will be split into bins for better processing and results. `processed_output` will contain the masked .jpg images of the possible smears based on the pre-processed images. There will be a masked output for each bin. 
+The script will output two directories: `pre_processed_images/` and `processed_output/`. `pre_processed_images/` will contain the modified images using Histogram Equalization, Gaussian Blur, and more. These images will be split into bins for better processing and results. `processed_output/` will contain the masked .jpg images of the possible smears based on the pre-processed images. There will be a masked output for each bin. 
