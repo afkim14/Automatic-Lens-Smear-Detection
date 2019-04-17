@@ -103,6 +103,8 @@ def pre_process(dir):
 
             curr_num_imgs+=1
             curr_image_index+=1
+
+        os.rename(bin_path, out_path + dir_name + "_" + "bin" + str(curr_image_index - curr_num_imgs) + "to" + str(curr_image_index-1))
     return out_path
 
 def process(dir):
@@ -125,7 +127,7 @@ def process(dir):
         dir = pre_process_paths[i]
         avg_img = image_mean(dir)
         threshold_img = cv2.threshold(avg_img, 127, 255, cv2.THRESH_BINARY)[1]
-        cv2.imwrite( process_paths[i] + 'final_mask.png', threshold_img )
+        cv2.imwrite( process_paths[i] + 'finalMask.png', threshold_img )
 
 def blur_detection(img_file):
     im = cv2.imread(img_file, cv2.IMREAD_GRAYSCALE)
