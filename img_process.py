@@ -4,6 +4,7 @@ import numpy as np
 import os
 import sys
 import shutil
+import math
 
 def greyscale(img_file):
     img = Image.open(img_file).convert('LA')
@@ -77,7 +78,7 @@ def pre_process(dir):
     # CREATE DIRECTORIES FOR BINS
     total_num_imgs = len(img_paths)
     num_imgs_per_bin = 100
-    num_bins = int(total_num_imgs / num_imgs_per_bin)
+    num_bins = math.ceil(float(total_num_imgs) / float(num_imgs_per_bin))
     if num_bins == 0 and total_num_imgs > 0:
         num_bins = 1
     curr_image_index = 0
@@ -88,7 +89,9 @@ def pre_process(dir):
         bin_path = out_path + dir_name + "_" + "bin_" + str(i+1) + "/"
         os.mkdir(bin_path)
         curr_num_imgs = 0
-        while (curr_num_imgs < num_imgs_per_bin or (i == num_bins-1 and curr_image_index < len(img_paths))):
+        while (curr_num_imgs < num_imgs_per_bin or i == num_bins-1):
+            if (curr_image_index >= len(img_paths)):
+                break
             img = cv2.imread(img_paths[curr_image_index])
             # HIST EQ
             img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
